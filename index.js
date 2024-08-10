@@ -14,6 +14,7 @@ app.use = (request, response, next) => {
   console.log(request.body);
   next();
 };
+
 let notes = [
   {
     id: 1,
@@ -91,7 +92,8 @@ app.use = (request, response) => {
     error: "Not found",
   });
 };
-const PORT = 3001;
+const PORT = process.env.PORT || 3001;
+
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
