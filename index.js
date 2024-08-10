@@ -74,6 +74,22 @@ app.post("/api/notes", (request, response) => {
     });
   }
 
+  app.put("/api/notes/:id", (request, response) => {
+    const id = Number(request.params.id);
+    const { content, important } = request.body;
+    const note = notes.find((note) => note.id === id);
+    if (!note) {
+      return response.status(404).json({
+        error: "Note not found",
+      });
+    }
+    const updatedNote = { ...note, content, important };
+
+    notes = notes.map((note) => (note.id !== id ? note : updatedNote));
+
+    response.json(updatedNote);
+  });
+
   const ids = notes.map((note) => note.id);
   const maxId = Math.max(...ids);
 
@@ -87,11 +103,11 @@ app.post("/api/notes", (request, response) => {
   response.status(201).json(newNote);
 });
 
-app.use = (request, response) => {
+app.use((request, response) => {
   response.status(404).json({
     error: "Not found",
   });
-};
+});
 const PORT = process.env.PORT || 3001;
 
 app.listen(PORT, () => {
